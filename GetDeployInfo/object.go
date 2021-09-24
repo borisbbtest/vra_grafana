@@ -1,5 +1,7 @@
 package vra
 
+import . "time"
+
 // Toke Struct
 type Token struct {
 	Token_Access  string `json:"access_token"`
@@ -19,10 +21,10 @@ type Blueprint struct {
 	Id            string    `json:"id"`
 	Name          string    `json:"name"`
 	CreatedBy     string    `json:"createdBy"`
-	CreatedAt     string    `json:"createdAt"`
+	CreatedAt     Time      `json:"createdAt"`
 	OwnedBy       string    `json:"ownedBy"`
 	LastUpdatedBy string    `json:"lastUpdatedBy"`
-	LastUpdatedAt string    `json:"lastUpdatedAt"`
+	LastUpdatedAt Time      `json:"lastUpdatedAt"`
 	Status        string    `json:"status"`
 	Data          []Catalog `json:"catalog"`
 }

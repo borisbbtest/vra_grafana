@@ -23,8 +23,6 @@ func GetDepoly(token Token, Url string, auth string) (value Content, err error) 
 			return vl, err
 		}
 		value = vl
-		fmt.Printf("\n %v", vl.Data[0].Name)
-
 	}
 	// fmt.Println("Metric", res, code)
 	return
