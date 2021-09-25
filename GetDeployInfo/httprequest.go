@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func PostReq(token Token, uri string, bodys string) (result string, err error) {
+func (d *ClinetObject) PostReq(token Token, uri string, bodys string) (result string, err error) {
 
 	//fmt.Printf("\n%v\n", uri)
 	client := &http.Client{}
@@ -35,7 +35,7 @@ func PostReq(token Token, uri string, bodys string) (result string, err error) {
 	return
 }
 
-func GETReq(token Token, uri string) (result string, err error, httpstatus int) {
+func (d *ClinetObject) GETReq(token Token, uri string) (result string, err error, httpstatus int) {
 
 	//fmt.Printf("\n%v\n", uri)
 	client := &http.Client{}

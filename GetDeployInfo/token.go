@@ -12,7 +12,7 @@ import (
 	"os"
 )
 
-func Gettoken(Auth string, urlvro string) (token string, timestamp int, tokenst Token) {
+func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, timestamp int, tokenst Token) {
 	client := &http.Client{}
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	req, err := http.NewRequest(
@@ -44,7 +44,7 @@ func Gettoken(Auth string, urlvro string) (token string, timestamp int, tokenst 
 	WriteTokenFile(string(body))
 	return
 }
-func OpenTokenFile() (tokenfile Token, e error) {
+func (d *ClinetObject) OpenTokenFile() (tokenfile Token, e error) {
 	jsonFile, err := os.Open("/tmp/token_last.json")
 	e = err
 	if err != nil {
