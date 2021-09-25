@@ -46,7 +46,7 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 	return
 }
 func (d *ClinetObject) OpenTokenFile() (tokenfile Token, e error) {
-	jsonFile, err := os.Open("/tmp/token_last.json")
+	jsonFile, err := os.Open("token_last.json")
 	e = err
 	if err != nil {
 		fmt.Println(err)
@@ -62,7 +62,7 @@ func (d *ClinetObject) OpenTokenFile() (tokenfile Token, e error) {
 }
 
 func WriteTokenFile(text string) error {
-	file, err := os.Create("/tmp/token_last.json")
+	file, err := os.Create("token_last.json")
 	if err != nil {
 		log.Fatal(err)
 		return err
