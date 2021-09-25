@@ -15,6 +15,7 @@ import (
 func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, timestamp int, tokenst Token) {
 	client := &http.Client{}
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	fmt.Printf("%v", fmt.Sprintf("%s/csp/gateway/am/api/login?access_token", urlvro))
 	req, err := http.NewRequest(
 		"POST", fmt.Sprintf("%s/csp/gateway/am/api/login?access_token", urlvro),
 		bytes.NewBuffer([]byte(Auth)),

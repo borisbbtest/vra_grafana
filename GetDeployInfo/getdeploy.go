@@ -14,7 +14,8 @@ func (d *ClinetObject) GetDepoly(token Token, Url string, auth string, stings_pa
 	if len(stings_page) >= 2 {
 		skip = stings_page[1]
 	}
-	path := string(fmt.Sprintf("deployment/api/deployments?$skip=%v&$top=%v&expand=blueprint", skip, top))
+	//https://712b-vra.mpk.lcl/deployment/api/swagger/swagger-ui.html?urls.primaryName=2020-08-25#/Deployments/getDeploymentsV3UsingGET
+	path := string(fmt.Sprintf("deployment/api/deployments?$skip=%v&$top=%v", skip, top))
 	url := string(fmt.Sprintf("%s/%s", Url, path))
 	res, _, code := d.GETReq(token, url)
 	// Если не получилось подключится попробуем еще разок и сгенерируем новый ключ

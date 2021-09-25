@@ -35,15 +35,25 @@ type PageInfo struct {
 	Offset     int64 `json:"offset"`
 }
 type Blueprint struct {
-	Id            string    `json:"id"`
-	Name          string    `json:"name"`
-	CreatedBy     string    `json:"createdBy"`
-	CreatedAt     Time      `json:"createdAt"`
-	OwnedBy       string    `json:"ownedBy"`
-	LastUpdatedBy string    `json:"lastUpdatedBy"`
-	LastUpdatedAt Time      `json:"lastUpdatedAt"`
-	Status        string    `json:"status"`
-	Data          []Catalog `json:"catalog"`
+	Id            string `json:"id"`
+	Name          string `json:"name"`
+	CreatedBy     string `json:"createdBy"`
+	CreatedAt     Time   `json:"createdAt"`
+	OwnedBy       string `json:"ownedBy"`
+	LastUpdatedBy string `json:"lastUpdatedBy"`
+	LastUpdatedAt Time   `json:"lastUpdatedAt"`
+	// Статусы в системе
+	// CREATE_SUCCESSFUL,
+	// CREATE_INPROGRESS,
+	// CREATE_FAILED,
+	// UPDATE_SUCCESSFUL,
+	// UPDATE_INPROGRESS,
+	// UPDATE_FAILED,
+	// DELETE_SUCCESSFUL,
+	// DELETE_INPROGRESS,
+	// DELETE_FAILED
+	Status string    `json:"status"`
+	Data   []Catalog `json:"catalog"`
 }
 
 type Catalog struct {
