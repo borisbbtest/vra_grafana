@@ -29,11 +29,6 @@ type Content struct {
 	Last             bool        `json:"last"`
 }
 
-type PageInfo struct {
-	PageNumber int64 `json:"pageNumber"`
-	PageSize   int64 `json:"pageSize"`
-	Offset     int64 `json:"offset"`
-}
 type Blueprint struct {
 	Id            string `json:"id"`
 	Name          string `json:"name"`
@@ -52,13 +47,13 @@ type Blueprint struct {
 	// DELETE_SUCCESSFUL,
 	// DELETE_INPROGRESS,
 	// DELETE_FAILED
-	Status string    `json:"status"`
-	Data   []Catalog `json:"catalog"`
+	CatalogData Catalog `json:"catalog"`
+	Status      string  `json:"status"`
 }
 
 type Catalog struct {
 	Description string `json:"description"`
-	id          string `json:"id"`
-	version     string `json:"version"`
+	ID          string `json:"id"`
+	Version     string `json:"version"`
 	Name        string `json:"name"`
 }
