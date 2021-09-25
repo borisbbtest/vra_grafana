@@ -51,6 +51,7 @@ type Blueprint struct {
 	Status      string  `json:"status"`
 }
 
+// /
 type Catalog struct {
 	Description string `json:"description"`
 	ID          string `json:"id"`
