@@ -12,7 +12,7 @@ import (
 	"os"
 )
 
-func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, timestamp int, tokenst Token) {
+func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, timestamp int, tokenst Token, err error) {
 	client := &http.Client{}
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	// fmt.Printf("%v", fmt.Sprintf("%s/csp/gateway/am/api/login?access_token", urlvro))

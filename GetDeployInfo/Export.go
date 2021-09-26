@@ -28,7 +28,7 @@ func (d *ClinetObject) Export(p ...int) (result []Content, err error) {
 	var tokenst Token
 	tokenGetLast, e := d.OpenTokenFile()
 	if e != nil {
-		_, _, tokenst = d.Gettoken(string(data), urlvro)
+		_, _, tokenst, _ = d.Gettoken(string(data), urlvro)
 		fmt.Printf("Not found file  %v get service %v last get service  %v", nowTimeStpam, tokenst.Expires_in)
 	} else {
 		tokenst = tokenGetLast

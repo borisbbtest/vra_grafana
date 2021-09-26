@@ -21,7 +21,7 @@ func (d *ClinetObject) GetDepoly(token Token, Url string, auth string, stings_pa
 	// Если не получилось подключится попробуем еще разок и сгенерируем новый ключ
 	if code == 401 {
 		fmt.Printf("Gen new")
-		_, _, token = d.Gettoken(auth, Url)
+		_, _, token, _ = d.Gettoken(auth, Url)
 		res, err, code = d.GETReq(token, url)
 	}
 	if code >= 200 && code < 300 {
