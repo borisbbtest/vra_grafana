@@ -24,7 +24,6 @@ func (d *ClinetObject) GetDepoly(token Token, Url string, auth string, stings_pa
 		_, _, token, _ = d.Gettoken(auth, Url)
 		res, err, code = d.GETReq(token, url)
 	}
-
 	if code >= 200 && code < 300 {
 		var vl Content
 		// var ty map[string]interface{}
