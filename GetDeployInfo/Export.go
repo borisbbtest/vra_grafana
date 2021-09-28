@@ -52,7 +52,7 @@ func (d *ClinetObject) Export(p ...int) (result []Content, err error) {
 		for i := 0; i <= len(datares.Data)-1; i++ {
 			// fmt.Printf("\n %v) %v", i, datares.Data[i])
 		}
-		///fmt.Printf("\n%v %v %v %v ", datares.TotalElements, datares.TotalPages, tr, (top * skip))
+		//fmt.Printf("\n%v %v %v %v ", datares.TotalElements, datares.TotalPages, tr, (top * skip))
 		skip++
 		result = append(result, datares)
 		tr = !datares.Last
