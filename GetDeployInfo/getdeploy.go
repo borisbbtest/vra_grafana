@@ -2,6 +2,7 @@ package vra
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -17,6 +18,7 @@ func (d *ClinetObject) GetDepoly(token Token, Url string, auth string, stings_pa
 	//https://712b-vra.mpk.lcl/deployment/api/swagger/swagger-ui.html?urls.primaryName=2020-08-25#/Deployments/getDeploymentsV3UsingGET
 	path := string(fmt.Sprintf("deployment/api/deployments?$skip=%v&$top=%v&expand=project", skip, top))
 	url := string(fmt.Sprintf("%s/%s", Url, path))
+	// fmt.Printf("%v", token)
 	res, _, code := d.GETReq(token, url)
 	// Если не получилось подключится попробуем еще разок и сгенерируем новый ключ
 	if code == 401 {
@@ -35,6 +37,9 @@ func (d *ClinetObject) GetDepoly(token Token, Url string, auth string, stings_pa
 			return vl, err
 		}
 		value = vl
+	} else {
+		err = errors.New(fmt.Sprintf("HTTP CODE %s ", code))
+		return
 	}
 	// fmt.Println("Metric", res, code)
 	return

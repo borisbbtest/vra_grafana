@@ -12,10 +12,12 @@ import (
 	"os"
 )
 
-func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, timestamp int, tokenst Token, err error) {
+func (d *ClinetObject) GetRTWeb(Auth string, urlvro string) (reftok RefreshToken, err error) {
 	client := &http.Client{}
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	// fmt.Printf("%v", fmt.Sprintf("%s/csp/gateway/am/api/login?access_token", urlvro))
+
+	// Временный токен
 	req, err := http.NewRequest(
 		"POST", fmt.Sprintf("%s/csp/gateway/am/api/login?access_token", urlvro),
 		bytes.NewBuffer([]byte(Auth)),
@@ -34,19 +36,72 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 	}
 	//log.Println("Response Body:", string(body))
 
-	var resj map[string]interface{}
-	json.Unmarshal([]byte(string(body)), &resj)
-	json.Unmarshal([]byte(string(body)), &tokenst)
-	token = fmt.Sprintf("%v", resj["access_token"])
-	timestamp = int(resj["expires_in"].(float64))
+	json.Unmarshal(body, &reftok)
+	WriteTokenFile(string(body), "/tmp/ref_token_last.json")
+
+	//rft := fmt.Sprintf("%s", resj["refresh_token"])
+	return
+}
+func (d *ClinetObject) GeBaseToken(rft RefreshToken, urlvro string) (body []byte, httpstatus int, err error) {
+	client := &http.Client{}
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	refresh_token := map[string]interface{}{
+		"refreshToken": rft.RefToken,
+	}
+	data_rft, _ := json.Marshal(refresh_token)
+	fmt.Printf("%v", string(data_rft))
+	req, err := http.NewRequest(
+		"POST", fmt.Sprintf("%s/iaas/api/login", urlvro),
+		bytes.NewBuffer([]byte(string(data_rft))),
+	)
+	req.Header.Add("Content-Type", "application/json")
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	body, err = ioutil.ReadAll(resp.Body)
+	httpstatus = resp.StatusCode
+	if err != nil {
+		log.Fatalf("Couldn't parse response body. %+v", err)
+	}
+	return
+}
+
+func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, timestamp int, tokenst Token, err error) {
+
+	// fmt.Printf("%v", fmt.Sprintf("%s/csp/gateway/am/api/login?access_token", urlvro))
+	var rft RefreshToken
+
+	tokenGetLast, e := d.OpenRefTokenFile("/tmp/ref_token_last.json")
+	if e != nil {
+		rft, _ = d.GetRTWeb(Auth, urlvro)
+		//fmt.Printf("Not found file  %v get service %v last get service  %v", nowTimeStpam, tokenst.Expires_in)
+	} else {
+		rft = tokenGetLast
+		fmt.Printf("Open file")
+	}
+
+	// Получаем токен
+	body, httpstatus, _ := d.GeBaseToken(rft, urlvro)
+	if httpstatus >= 400 {
+		fmt.Printf("Gen new ref token")
+		rft, _ = d.GetRTWeb(Auth, urlvro)
+		// fmt.Printf("%s  ", rft)
+		body, httpstatus, err = d.GeBaseToken(rft, urlvro)
+	}
+	json.Unmarshal(body, &tokenst)
+	WriteTokenFile(string(body), "/tmp/token_last.json")
+	//fmt.Printf("Response Body: %s \n", string(body))
 
 	//fmt.Sprintf("%v", reflect.TypeOf(resj["validity"]))
 	//ts = fmt.Sprintf("%v", tp)
-	WriteTokenFile(string(body))
+
 	return
 }
-func (d *ClinetObject) OpenTokenFile() (tokenfile Token, e error) {
-	jsonFile, err := os.Open("/tmp/token_last.json")
+
+func (d *ClinetObject) OpenTokenFile(path string) (tokenfile Token, e error) {
+	jsonFile, err := os.Open(path)
 	e = err
 	if err != nil {
 		fmt.Println(err)
@@ -61,8 +116,24 @@ func (d *ClinetObject) OpenTokenFile() (tokenfile Token, e error) {
 	return
 }
 
-func WriteTokenFile(text string) error {
-	file, err := os.Create("/tmp/token_last.json")
+func (d *ClinetObject) OpenRefTokenFile(path string) (tokenfile RefreshToken, e error) {
+	jsonFile, err := os.Open(path)
+	e = err
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer jsonFile.Close()
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	//var resj map[string]interface{}
+
+	json.Unmarshal(byteValue, &tokenfile)
+	//fmt.Printf(" token %v ", tokenfile)
+	return
+}
+
+func WriteTokenFile(text string, path string) error {
+	file, err := os.Create(path)
 	if err != nil {
 		log.Fatal(err)
 		return err

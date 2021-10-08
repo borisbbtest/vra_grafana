@@ -5,6 +5,7 @@ import . "time"
 type ClinetObject struct {
 	Login    string `admin`
 	Password string `P@ss0wrd`
+	Domain   string `System Domain`
 	SSL      bool
 	FQDN     string `none`
 	Result   []Content
@@ -12,11 +13,12 @@ type ClinetObject struct {
 
 // Toke Struct
 type Token struct {
-	Token_Access  string `json:"access_token"`
-	Refresh_Token string `json:"refresh_token"`
-	Id_Token      string `json:"id_token"`
-	Token_Type    string `josn:Bearer`
-	Expires_in    string `json:"expires_in"`
+	Id_Token   string `json:"token"`
+	Token_Type string `json:"tokenType"`
+}
+
+type RefreshToken struct {
+	RefToken string `json:"refresh_token"`
 }
 
 type Content struct {

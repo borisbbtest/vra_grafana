@@ -18,7 +18,7 @@ func (d *ClinetObject) PostReq(token Token, uri string, bodys string) (result st
 		"POST", uri, bytes.NewBuffer([]byte(bodys)),
 	)
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("%s %s", token.Token_Type, token.Token_Access))
+	req.Header.Add("Authorization", fmt.Sprintf("%s %s", token.Token_Type, token.Id_Token))
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
@@ -45,7 +45,7 @@ func (d *ClinetObject) GETReq(token Token, uri string) (result string, err error
 		"GET", uri, nil,
 	)
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("authorization", fmt.Sprintf("%s %s", token.Token_Type, token.Token_Access))
+	req.Header.Add("authorization", fmt.Sprintf("%s %s", token.Token_Type, token.Id_Token))
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
@@ -59,6 +59,6 @@ func (d *ClinetObject) GETReq(token Token, uri string) (result string, err error
 		return
 	}
 	result = string(body)
-	// fmt.Println("Response Body:", string(body))
+	//fmt.Println("Response Body:", string(body))
 	return
 }

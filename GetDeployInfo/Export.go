@@ -3,13 +3,13 @@ package vra
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 )
 
 func (d *ClinetObject) Export(p ...int) (result []Content, err error) {
 	Auth := map[string]interface{}{
 		"username": d.Login,
 		"password": d.Password,
+		"domain":   d.Domain,
 	}
 	page := 0
 	if len(p) > 0 {
@@ -19,17 +19,17 @@ func (d *ClinetObject) Export(p ...int) (result []Content, err error) {
 	if len(p) >= 1 {
 		top = p[1]
 	}
-	nowTimeStpam := time.Now().UnixNano() / int64(time.Millisecond)
+	//nowTimeStpam := time.Now().UnixNano() / int64(time.Millisecond)
 	var urlvro string = ""
 	if urlvro = string(fmt.Sprintf("http://%s", d.FQDN)); d.SSL == true {
 		urlvro = string(fmt.Sprintf("https://%s", d.FQDN))
 	}
 	data, _ := json.Marshal(Auth)
 	var tokenst Token
-	tokenGetLast, e := d.OpenTokenFile()
+	tokenGetLast, e := d.OpenTokenFile("/tmp/token_last.json")
 	if e != nil {
 		_, _, tokenst, _ = d.Gettoken(string(data), urlvro)
-		fmt.Printf("Not found file  %v get service %v last get service  %v", nowTimeStpam, tokenst.Expires_in)
+		//fmt.Printf("Not found file  %v get service %v last get service  %v", nowTimeStpam, tokenst.Expires_in)
 	} else {
 		tokenst = tokenGetLast
 		fmt.Printf("Open file")
