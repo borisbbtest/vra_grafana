@@ -106,7 +106,7 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 	//fmt.Sprintf("%v", reflect.TypeOf(resj["validity"]))
 	//ts = fmt.Sprintf("%v", tp)
 	if httpstatus >= 300 && err == nil {
-		err = errors.New(fmt.Sprintf("HTTP CODE %s ", httpstatus))
+		err = errors.New(fmt.Sprintf("HTTP CODE %v %v ", httpstatus, string(body)))
 	}
 	return
 }
