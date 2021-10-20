@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -89,13 +90,15 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 		// fmt.Printf("%s  ", rft)
 		body, httpstatus, err = d.GeBaseToken(rft, urlvro)
 	}
-	json.Unmarshal(body, &tokenst)
-	WriteTokenFile(string(body), "/tmp/token_last.json")
+	err = json.Unmarshal(body, &tokenst)
+	err = WriteTokenFile(string(body), "/tmp/token_last.json")
 	//fmt.Printf("Response Body: %s \n", string(body))
 
 	//fmt.Sprintf("%v", reflect.TypeOf(resj["validity"]))
 	//ts = fmt.Sprintf("%v", tp)
-
+	if httpstatus >= 300 {
+		err = errors.New(fmt.Sprintf("HTTP CODE %s ", httpstatus))
+	}
 	return
 }
 
