@@ -81,7 +81,6 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 		rft = tokenGetLast
 		fmt.Printf("Open file")
 	}
-
 	// Получаем токен
 	body, httpstatus, err := d.GeBaseToken(rft, urlvro)
 	if httpstatus >= 300 {
