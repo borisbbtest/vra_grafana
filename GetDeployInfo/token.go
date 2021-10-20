@@ -84,7 +84,7 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 
 	// Получаем токен
 	body, httpstatus, err := d.GeBaseToken(rft, urlvro)
-	if httpstatus >= 400 {
+	if httpstatus >= 300 {
 		fmt.Printf("Gen new ref token")
 		rft, err = d.GetRTWeb(Auth, urlvro)
 		// fmt.Printf("%s  ", rft)
