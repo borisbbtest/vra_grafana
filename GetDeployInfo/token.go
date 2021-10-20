@@ -73,7 +73,7 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 
 	// fmt.Printf("%v", fmt.Sprintf("%s/csp/gateway/am/api/login?access_token", urlvro))
 	var rft RefreshToken
-
+	var e error
 	tokenGetLast, err := d.OpenRefTokenFile("/tmp/ref_token_last.json")
 	if err != nil {
 		rft, err = d.GetRTWeb(Auth, urlvro)
@@ -86,16 +86,20 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 	body, httpstatus, err := d.GeBaseToken(rft, urlvro)
 	if httpstatus >= 300 {
 		fmt.Printf("Gen new ref token")
-		rft, err = d.GetRTWeb(Auth, urlvro)
+		rft, e = d.GetRTWeb(Auth, urlvro)
 		// fmt.Printf("%s  ", rft)
-		body, httpstatus, err = d.GeBaseToken(rft, urlvro)
+		body, httpstatus, e = d.GeBaseToken(rft, urlvro)
+		if e != nil && err == nil {
+			err = e
+		}
+
 	}
-	e := json.Unmarshal(body, &tokenst)
-	if e != nil {
+	e = json.Unmarshal(body, &tokenst)
+	if e != nil && err == nil {
 		err = e
 	}
 	e = WriteTokenFile(string(body), "/tmp/token_last.json")
-	if e != nil {
+	if e != nil && err == nil {
 		err = e
 	}
 	//fmt.Printf("Response Body: %s \n", string(body))
