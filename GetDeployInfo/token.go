@@ -93,7 +93,6 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 	err = json.Unmarshal(body, &tokenst)
 	err = WriteTokenFile(string(body), "/tmp/token_last.json")
 	//fmt.Printf("Response Body: %s \n", string(body))
-
 	//fmt.Sprintf("%v", reflect.TypeOf(resj["validity"]))
 	//ts = fmt.Sprintf("%v", tp)
 	if httpstatus >= 300 {
