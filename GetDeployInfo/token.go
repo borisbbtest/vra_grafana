@@ -90,8 +90,14 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 		// fmt.Printf("%s  ", rft)
 		body, httpstatus, err = d.GeBaseToken(rft, urlvro)
 	}
-	err = json.Unmarshal(body, &tokenst)
-	err = WriteTokenFile(string(body), "/tmp/token_last.json")
+	e := json.Unmarshal(body, &tokenst)
+	if e != nil {
+		err = e
+	}
+	e = WriteTokenFile(string(body), "/tmp/token_last.json")
+	if e != nil {
+		err = e
+	}
 	//fmt.Printf("Response Body: %s \n", string(body))
 	//fmt.Sprintf("%v", reflect.TypeOf(resj["validity"]))
 	//ts = fmt.Sprintf("%v", tp)
