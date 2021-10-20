@@ -73,9 +73,9 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 	// fmt.Printf("%v", fmt.Sprintf("%s/csp/gateway/am/api/login?access_token", urlvro))
 	var rft RefreshToken
 
-	tokenGetLast, e := d.OpenRefTokenFile("/tmp/ref_token_last.json")
-	if e != nil {
-		rft, _ = d.GetRTWeb(Auth, urlvro)
+	tokenGetLast, err := d.OpenRefTokenFile("/tmp/ref_token_last.json")
+	if err != nil {
+		rft, err = d.GetRTWeb(Auth, urlvro)
 		//fmt.Printf("Not found file  %v get service %v last get service  %v", nowTimeStpam, tokenst.Expires_in)
 	} else {
 		rft = tokenGetLast
@@ -83,10 +83,10 @@ func (d *ClinetObject) Gettoken(Auth string, urlvro string) (token string, times
 	}
 
 	// Получаем токен
-	body, httpstatus, _ := d.GeBaseToken(rft, urlvro)
+	body, httpstatus, err := d.GeBaseToken(rft, urlvro)
 	if httpstatus >= 400 {
 		fmt.Printf("Gen new ref token")
-		rft, _ = d.GetRTWeb(Auth, urlvro)
+		rft, err = d.GetRTWeb(Auth, urlvro)
 		// fmt.Printf("%s  ", rft)
 		body, httpstatus, err = d.GeBaseToken(rft, urlvro)
 	}
